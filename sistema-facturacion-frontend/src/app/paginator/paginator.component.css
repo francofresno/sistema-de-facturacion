@@ -1,0 +1,6 @@
+.pagination > li > a
+{
+    border-radius: 0px;
+    background-color: rgb(243, 174, 45);
+    border-color: rgb(243, 174, 45);
+}

@@ -1,0 +1,40 @@
+/* You can add global styles to this file, and also import other style files */
+html{
+    position: relative;
+    min-height: 100%;
+}
+body {
+    margin: 0; 
+    padding: 0;
+    width: 100%;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+html, body { height: 100%; }
+
+.wrap {
+    margin-bottom: -60px;
+    min-height: 100%;
+}
+
+.btn-custom {
+    border-radius: 0px;
+    border-color: rgb(243, 174, 45);
+    background-color: rgb(243, 174, 45);
+}
+.btn-custom:hover {
+    background-color: rgb(202, 146, 40);
+}
+textarea:hover, 
+input:hover, 
+textarea:active, 
+input:active, 
+textarea:focus, 
+.btn:focus
+{
+    -webkit-appearance:none;
+    box-shadow: none !important;
+}
+
+.card-header {
+    background-color: rgb(243, 174, 45);
+}

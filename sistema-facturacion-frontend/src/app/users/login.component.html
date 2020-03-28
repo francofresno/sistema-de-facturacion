@@ -1,0 +1,35 @@
+<div class="card border-0 bg-dark text-white text-center">
+    <div class="card-header">{{title}}</div>
+    <div class="card-body d-flex justify-content-center">
+        <form method="post">
+            <div class="form-group col-sm-12">
+                <input [(ngModel)]="user.username" type="text" class="form-control" name="username" id="username"
+                    placeholder="Username" autofocus required>
+            </div>
+            <div class="form-group col-sm-12">
+                <input [(ngModel)]="user.password" type="password" class="form-control" name="password" id="password"
+                    placeholder="Password" required>
+            </div>
+            <div class="form-group col-sm-12">
+                <input (click)="login()" type="submit" class="btn btn-custom btn-lg btn-block text-white"
+                    value="Iniciar Sesión">
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<div class="alert alert-warning mt-5" role="alert">
+    <h3>Utilice uno de estos usuarios para probar la aplicación:</h3>
+    <h5>Usuario Administrador:</h5>
+    <ul>
+        <li>Usuario: admin</li>
+        <li>Contraseña: 12345</li>
+    </ul>
+    <h5>Usuario sin privilegios:</h5>
+    <ul>
+        <li>Usuario: franco</li>
+        <li>Contraseña: 12345</li>
+    </ul>
+    <p>Las diferencias las podrá notar en las acciones (editar, borrar, crear clientes y facturas, subir imágenes, entre otras) que cada usuario puede hacer.</p>
+</div>

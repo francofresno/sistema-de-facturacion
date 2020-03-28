@@ -1,0 +1,100 @@
+<div class="open-modal animation fade-in" *ngIf="modalService.modal">
+    <div class="modal modal-display" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ title }}</h5>
+                    <button (click)="closeModal()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="cotainer">
+                        <div class="row">
+                            <div class="col-sm">
+
+                                <ul *ngIf="client" class="list-group text-dark mb-3">
+                                    <li class="list-group-item">{{client.firstName}}</li>
+                                    <li class="list-group-item">{{client.lastName}}</li>
+                                    <li class="list-group-item">{{client.email}}</li>
+                                    <li class="list-group-item">{{client.createAt | date:"fullDate"}}</li>
+                                    <li class="list-group-item">{{client.region.rname}}</li>
+                                </ul>
+
+                                <div *ngIf="authService.hasRole('ROLE_ADMIN')" class="input-group mb-3">
+                                    <div class="custom-file">
+                                        <input (change)="selectPhoto($event)" type="file" class="custom-file-input"
+                                            id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
+                                        <label class="custom-file-label" for="inputGroupFile04">Seleccionar Foto</label>
+                                    </div>
+                                    <div class="input-group-append">
+                                        <button (click)="uploadPhoto()" [disabled]="!photoSelected"
+                                            class="btn btn-outline-secondary" type="button"
+                                            id="inputGroupFileAddon04">Subir</button>
+                                    </div>
+                                </div>
+
+                                <div class="progress" *ngIf="progress > 0">
+                                    <div class="progress-bar progress-bar-striped" role="progressbar"
+                                        [ngStyle]="{width:progress+'%'}" attr.aria-valuenow="{{progress}}"
+                                        aria-valuemin="0" aria-valuemax="100">
+                                        {{progress}}%
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-sm">
+                                <img *ngIf="client?.photo" src="http://localhost:8080/api/uploads/img/{{client.photo}}"
+                                    alt="{{client.photo}}" class="img-thumbnail rounded">
+                            </div>
+                        </div>
+
+                        <div class="row" *ngIf="authService.hasRole('ROLE_ADMIN')">
+                            <button type="button" name="edit" [routerLink]="['/invoices/form', client.id]" class="btn btn-custom text-white ml-3">Crear Factura</button>
+                        </div>
+
+                        <div class="row">
+
+                            <div *ngIf="client.invoices.length==0" class="alert alert-info my-4">
+                                El cliente no tiene ninguna factura asignada.
+                            </div>
+
+                            <table *ngIf="client.invoices.length>0" class="table table-bordered table-striped my-4 mx-3">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>Folio</th>
+                                        <th>Descripción</th>
+                                        <th>Fecha</th>
+                                        <th>Total</th>
+                                        <th>Detalle</th>
+                                        <th *ngIf="authService.hasRole('ROLE_ADMIN')">Eliminar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let invoice of client.invoices">
+                                        <td>{{invoice.id}}</td>
+                                        <td>{{invoice.description}}</td>
+                                        <td>{{invoice.createAt}}</td>
+                                        <td>{{invoice.total}}</td>
+                                        <td class="text-center"> 
+                                            <button class="btn btn-primary btn-sm" type="button"
+                                                [routerLink]="['/invoices', invoice.id]"><i class="fa fa-search"></i></button>
+                                        </td>
+                                        <td *ngIf="authService.hasRole('ROLE_ADMIN')" class="text-center">
+                                            <button class="btn btn-danger btn-sm" type="button"
+                                                (click)="delete(invoice)"><i class="fa fa-times"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button (click)="closeModal()" type="button" class="btn btn-secondary"
+                        data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

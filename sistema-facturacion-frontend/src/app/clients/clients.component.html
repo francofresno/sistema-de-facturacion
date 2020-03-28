@@ -1,0 +1,66 @@
+<profile-client *ngIf="clientSelected" [client]="clientSelected"></profile-client>
+
+<div class="card shadow-sm mb-3 bg-dark text-white border-0">
+    <div class="card-header">Listado de Clientes</div>
+    <div class="card-body text-primary table-responsive">
+
+        <div class="my-2 text-left">
+            <button *ngIf="authService.hasRole('ROLE_ADMIN')" class="btn btn-custom btn-rounded btn-create-client text-white" type="button" [routerLink]="['/clients/form']">
+                Crear Cliente
+            </button>
+        </div>
+        <div *ngIf="clients?.length == 0" class="alert alert-info">
+            No hay registros en la base de datos!
+        </div>
+        <table class="table table-bordered table-striped table-dark" *ngIf="clients?.length>0">
+            <thead class="text-center">
+                <th *ngIf="authService.hasRole('ROLE_USER')">#</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Email</th>
+                <th>Fecha</th>
+                <th *ngIf="authService.hasRole('ROLE_ADMIN')">Crear Factura</th>
+                <th *ngIf="authService.hasRole('ROLE_ADMIN')" >Editar</th>
+                <th *ngIf="authService.hasRole('ROLE_ADMIN')">Borrar</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let client of clients">
+                    
+                    <td *ngIf="authService.hasRole('ROLE_USER')">
+                        <img (click)="openModal(client)" *ngIf="client?.photo"
+                            src="http://localhost:8080/api/uploads/img/{{client.photo}}" alt="{{client.photo}}"
+                            class="img-thumbnail rounded img-fluid" style="width:64px; cursor: pointer;">
+
+                        <img (click)="openModal(client)" *ngIf="!client?.photo"
+                            src="http://localhost:8080/images/default.png" alt="No photo"
+                            class="img-thumbnail rounded img-fluid" style="width:64px; cursor: pointer;">
+                    </td>
+                    <td>{{ client.firstName }}</td>
+                    <td>{{ client.lastName }}</td>
+                    <td>{{ client.email }}</td>
+                    <td>{{ client.createAt | date:"EEEE dd, MMMM yyyy"}}</td>
+                    <td *ngIf="authService.hasRole('ROLE_ADMIN')" class="text-center">
+                        <button type="button" name="edit" [routerLink]="['/invoices/form', client.id]"
+                            class="btn btn-success"><i class="fa fa-file-text"></i></button>
+                    </td>
+                    <td *ngIf="authService.hasRole('ROLE_ADMIN')" class="text-center">
+                        <button type="button" name="edit" [routerLink]="['/clients/form', client.id]"
+                            class="btn btn-primary"><i class="fa fa-pencil"></i></button>
+                    </td>
+                    <td *ngIf="authService.hasRole('ROLE_ADMIN')" class="text-center">
+                        <button type="button" name="delete" (click)="delete(client)"
+                            class="btn btn-danger"><i class="fa fa-times"></i></button>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+
+        <paginator-nav *ngIf="paginador" [paginador]="paginador"></paginator-nav>
+
+    </div>
+</div>
+
+<div *ngIf="!authService.isAuthenticated()" class="alert alert-warning mt-5 text-center" role="alert">
+    <p>Para probar y ver todas las características del sistema, inicie sesión. El usuario y contraseña se encuentra provisto en la sección correspondiente.</p>
+</div>
